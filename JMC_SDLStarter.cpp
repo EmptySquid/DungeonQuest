@@ -2,6 +2,7 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include "DungeonGame.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ static SDL_Renderer* renderer = NULL;
 static SDL_Texture* texture = NULL;
 
 static const char* ProjectName = "DungeonQuest";
-
+static DungeonGame* Game;
 
 
 /* This function runs once at startup. */
@@ -32,7 +33,13 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-
+    Game = new DungeonGame();
+    if (Game == nullptr)
+    {
+        std::cout << "Game is null. ";
+    }
+    Game->Awake(renderer);
+    
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -84,7 +91,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_RenderClear(renderer);  /* start with a blank canvas. */
 
     // Your Update code goes here.
-    
+    Game->Update(renderer);
 
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 
