@@ -56,19 +56,19 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-
+            Game->Input("w");
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-
+            Game->Input("s");
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-
+            Game->Input("a");
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-
+            Game->Input("d");
         }
 
     }
