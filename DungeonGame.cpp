@@ -13,7 +13,7 @@ void DungeonGame::Awake(SDL_Renderer* _renderer)
 	//Initialize Player
 	std::cout << "You have entered the dungeon. ";
 	Hero = new Player;
-	Hero->Initialize(_renderer, TileSize, "Sprites/Hero_sword.png");
+	Hero->Initialize(_renderer, TileSize, Path_Hero);
 	SDL_SetTextureScaleMode(this->Hero->Texture, SDL_SCALEMODE_NEAREST);
 
 	//Initialize Goblin
@@ -22,12 +22,25 @@ void DungeonGame::Awake(SDL_Renderer* _renderer)
 	Goblin->SetPosition(100, 0);
 	SDL_SetTextureScaleMode(this->Goblin->Texture, SDL_SCALEMODE_NEAREST);
 
+	//Loads Tile Textures
+	for (int i = 0; i < TileTextureAmount; i++)
+	{
+		TileTextures[i] = IMG_LoadTexture(_renderer, TileTexturePaths[i].c_str());
+		SDL_SetTextureScaleMode(TileTextures[i], SDL_SCALEMODE_NEAREST);
+	}
+
 	LoadRoom("Data/Rooms/Room01.bmp");
 }
 
 void DungeonGame::Update(SDL_Renderer* _renderer)
 {
-	SDL_RenderTexture(_renderer);
+	for (int x = 0; x < RoomSize; x++)
+	{
+		for (int y = 0; y < RoomSize; y++)
+		{
+			SDL_RenderTexture(_renderer, Tiles[x][y].Texture, NULL, &Tiles[x][y].Rect);
+		}
+	}
 
 	SDL_RenderTexture(_renderer, this->Hero->Texture, NULL, &Hero->Rect);
 
@@ -78,7 +91,7 @@ void DungeonGame::LoadRoom(const char* filename)
 
 			// col now contains pixel colour at position x,y!
 			// TODO, configure the tile at x/y with this colour.
-			Tiles[x][y].Configure(col);
+			Tiles[x][y].Configure(col, x * TileSize, y * TileSize, TileSize, TileTextures);
 		}
 	}
 }
